@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#071015">
+    <title>Volt Runner</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand" aria-label="Volt Runner">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Volt Runner</span>
+        </div>
+        <div class="top-stats" aria-label="Run status">
+          <span id="levelBadge">Level 1</span>
+          <span id="scoreBadge">Score 0</span>
+          <span id="statusBadge">Standby</span>
+        </div>
+      </header>
+
+      <main class="game-shell">
+        <section class="stage" aria-label="Volt Runner board">
+          <canvas id="gameCanvas" width="960" height="960" tabindex="0"></canvas>
+          <div id="messageLayer" class="message-layer is-visible" role="status" aria-live="polite">
+            <div class="message-content">
+              <h1 id="messageTitle">Volt Runner</h1>
+              <p id="messageText">Board ready.</p>
+              <button id="primaryButton" class="action-button" type="button">
+                <span class="action-mark" aria-hidden="true"></span>
+                <span id="primaryButtonText">Start run</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="control-panel" aria-label="Telemetry">
+          <section class="readout">
+            <div class="readout-row">
+              <span>Energy</span>
+              <span id="energyValue">100%</span>
+            </div>
+            <div class="meter">
+              <span id="energyBar"></span>
+            </div>
+          </section>
+
+          <section class="readout">
+            <div class="readout-row">
+              <span>Heat</span>
+              <span id="heatValue">0%</span>
+            </div>
+            <div class="meter heat">
+              <span id="heatBar"></span>
+            </div>
+          </section>
+
+          <section class="run-grid">
+            <div>
+              <span class="label">Moves</span>
+              <strong id="movesValue">0</strong>
+            </div>
+            <div>
+              <span class="label">Leaks</span>
+              <strong id="leaksValue">0</strong>
+            </div>
+            <div>
+              <span class="label">Time</span>
+              <strong id="timeValue">0.0s</strong>
+            </div>
+            <div>
+              <span class="label">Level</span>
+              <strong id="levelValue">1/5</strong>
+            </div>
+          </section>
+
+          <section class="level-list" aria-label="Levels">
+            <span data-level-dot="0" class="is-active"></span>
+            <span data-level-dot="1"></span>
+            <span data-level-dot="2"></span>
+            <span data-level-dot="3"></span>
+            <span data-level-dot="4"></span>
+          </section>
+
+          <div class="panel-actions">
+            <button id="restartButton" class="ghost-button" type="button">Restart</button>
+            <button id="nextButton" class="ghost-button" type="button">Next</button>
+          </div>
+        </aside>
+      </main>
+
+      <footer class="footer">
+        <span id="footerStatus">Static browser build</span>
+      </footer>
+    </div>
+
+    <script src="./game.js"></script>
+  </body>
+</html>
