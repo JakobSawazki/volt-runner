@@ -37,6 +37,18 @@
         </section>
 
         <aside class="control-panel" aria-label="Telemetry">
+          <section class="difficulty-panel" aria-label="Difficulty">
+            <div class="readout-row">
+              <span>Difficulty</span>
+              <span id="difficultyValue">Medium x1.00</span>
+            </div>
+            <div class="segmented-control" role="radiogroup" aria-label="Difficulty level">
+              <button type="button" data-difficulty="easy" role="radio" aria-checked="false">Easy</button>
+              <button type="button" data-difficulty="medium" role="radio" aria-checked="true" class="is-active">Medium</button>
+              <button type="button" data-difficulty="hard" role="radio" aria-checked="false">Hard</button>
+            </div>
+          </section>
+
           <section class="readout">
             <div class="readout-row">
               <span>Energy</span>

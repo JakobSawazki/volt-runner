@@ -20,7 +20,9 @@ const ui = {
   primaryButtonText: document.querySelector("#primaryButtonText"),
   restartButton: document.querySelector("#restartButton"),
   nextButton: document.querySelector("#nextButton"),
+  difficultyValue: document.querySelector("#difficultyValue"),
   footerStatus: document.querySelector("#footerStatus"),
+  difficultyButtons: Array.from(document.querySelectorAll("[data-difficulty]")),
   dots: Array.from(document.querySelectorAll("[data-level-dot]"))
 };
 
@@ -39,6 +41,30 @@ const baseConnections = {
   tee: ["n", "e", "s"],
   cross: ["n", "e", "s", "w"],
   end: ["e"]
+};
+
+const difficulties = {
+  easy: {
+    label: "Easy",
+    scoreMultiplier: 0.8,
+    drainMultiplier: 0.72,
+    leakMultiplier: 0.68,
+    rotateMultiplier: 0.75
+  },
+  medium: {
+    label: "Medium",
+    scoreMultiplier: 1,
+    drainMultiplier: 1,
+    leakMultiplier: 1,
+    rotateMultiplier: 1
+  },
+  hard: {
+    label: "Hard",
+    scoreMultiplier: 1.45,
+    drainMultiplier: 1.24,
+    leakMultiplier: 1.22,
+    rotateMultiplier: 1.14
+  }
 };
 
 const levels = [
@@ -178,6 +204,7 @@ const levels = [
 const state = {
   size: 7,
   levelIndex: 0,
+  difficultyKey: "medium",
   status: "idle",
   energy: 100,
   heat: 0,
@@ -194,6 +221,10 @@ const state = {
   lastFrame: performance.now(),
   pixelRatio: 1
 };
+
+function activeDifficulty() {
+  return difficulties[state.difficultyKey];
+}
 
 function key(x, y) {
   return `${x},${y}`;
@@ -233,6 +264,7 @@ function scrambleRotation(shape, solution, index, levelIndex) {
 
 function loadLevel(levelIndex) {
   const level = levels[levelIndex];
+  const difficulty = activeDifficulty();
   state.levelIndex = levelIndex;
   state.status = "idle";
   state.energy = 100;
@@ -269,7 +301,7 @@ function loadLevel(levelIndex) {
   const source = state.cells.find((cell) => cell.kind === "source");
   state.selected = { x: source.x, y: source.y };
   refreshNetwork();
-  showMessage("Volt Runner", level.name, "Start run");
+  showMessage("Volt Runner", `${level.name} / ${difficulty.label}`, "Start run");
   syncUi();
 }
 
@@ -361,6 +393,18 @@ function nextLevel() {
   loadLevel(state.levelIndex + 1);
 }
 
+function setDifficulty(difficultyKey) {
+  if (!difficulties[difficultyKey] || difficultyKey === state.difficultyKey) {
+    return;
+  }
+
+  state.difficultyKey = difficultyKey;
+  state.completed.clear();
+  state.score = 0;
+  state.levelScores = Array(levels.length).fill(0);
+  loadLevel(0);
+}
+
 function rotateCell(x, y) {
   const cell = getCell(x, y);
   if (!cell || cell.fixed || !cell.shape || state.status !== "running") {
@@ -369,7 +413,7 @@ function rotateCell(x, y) {
 
   cell.rotation = normalizeRotation(cell.shape, cell.rotation + 1);
   state.moves += 1;
-  state.energy = Math.max(0, state.energy - levels[state.levelIndex].rotateCost);
+  state.energy = Math.max(0, state.energy - levels[state.levelIndex].rotateCost * activeDifficulty().rotateMultiplier);
   refreshNetwork();
 
   if (state.network.corePowered) {
@@ -384,7 +428,9 @@ function completeLevel() {
     return;
   }
 
-  const levelScore = Math.round(600 + state.energy * 14 - state.moves * 12 + Math.max(0, 45 - state.elapsed) * 8);
+  const difficulty = activeDifficulty();
+  const baseScore = 600 + state.energy * 14 - state.moves * 12 + Math.max(0, 45 - state.elapsed) * 8;
+  const levelScore = Math.round(baseScore * difficulty.scoreMultiplier);
   const finalScore = Math.max(100, levelScore);
   const previousScore = state.levelScores[state.levelIndex] || 0;
   if (finalScore > previousScore) {
@@ -397,7 +443,7 @@ function completeLevel() {
   const finalLevel = state.levelIndex === levels.length - 1;
   showMessage(
     finalLevel ? "Grid online" : "Level stable",
-    finalLevel ? `Final score ${state.score}` : `Score ${state.score}`,
+    finalLevel ? `Final score ${state.score} / ${difficulty.label}` : `Score ${state.score} / ${difficulty.label}`,
     finalLevel ? "Run again" : "Next level"
   );
   syncUi();
@@ -406,7 +452,7 @@ function completeLevel() {
 function failLevel() {
   state.status = "lost";
   state.energy = 0;
-  showMessage("Charge lost", levels[state.levelIndex].name, "Retry");
+  showMessage("Charge lost", `${levels[state.levelIndex].name} / ${activeDifficulty().label}`, "Retry");
   syncUi();
 }
 
@@ -423,6 +469,7 @@ function hideMessage() {
 
 function syncUi() {
   const level = levels[state.levelIndex];
+  const difficulty = activeDifficulty();
   const energy = Math.max(0, Math.min(100, state.energy));
   const heat = Math.max(0, Math.min(100, state.heat));
 
@@ -437,8 +484,15 @@ function syncUi() {
   ui.leaksValue.textContent = state.network.leakCount;
   ui.timeValue.textContent = `${state.elapsed.toFixed(1)}s`;
   ui.levelValue.textContent = `${state.levelIndex + 1}/${levels.length}`;
+  ui.difficultyValue.textContent = `${difficulty.label} x${difficulty.scoreMultiplier.toFixed(2)}`;
   ui.nextButton.disabled = state.status !== "won";
-  ui.footerStatus.textContent = `${level.name} / ${statusLabel()}`;
+  ui.footerStatus.textContent = `${level.name} / ${difficulty.label} / ${statusLabel()}`;
+
+  ui.difficultyButtons.forEach((button) => {
+    const isActive = button.dataset.difficulty === state.difficultyKey;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-checked", String(isActive));
+  });
 
   ui.dots.forEach((dot, index) => {
     dot.classList.toggle("is-active", index === state.levelIndex);
@@ -468,11 +522,15 @@ function update(dt) {
   }
 
   const level = levels[state.levelIndex];
+  const difficulty = activeDifficulty();
   refreshNetwork();
 
   state.elapsed += dt;
   state.totalElapsed += dt;
-  state.energy -= dt * (level.drain + state.network.leakCount * level.leakDrain);
+  state.energy -= dt * (
+    level.drain * difficulty.drainMultiplier +
+    state.network.leakCount * level.leakDrain * difficulty.leakMultiplier
+  );
   const targetHeat = Math.min(100, state.network.leakCount * 34 + (100 - state.energy) * 0.18);
   state.heat += (targetHeat - state.heat) * Math.min(1, dt * 5);
 
@@ -833,6 +891,9 @@ canvas.addEventListener("keydown", (event) => {
 ui.primaryButton.addEventListener("click", startRun);
 ui.restartButton.addEventListener("click", restartLevel);
 ui.nextButton.addEventListener("click", nextLevel);
+ui.difficultyButtons.forEach((button) => {
+  button.addEventListener("click", () => setDifficulty(button.dataset.difficulty));
+});
 
 function frame(now) {
   const dt = Math.min(0.08, (now - state.lastFrame) / 1000);

@@ -2,6 +2,8 @@
 
 Volt Runner is a small browser mini-game built with plain HTML, CSS, and JavaScript. It is designed to run as a static site, so it can be published directly with GitHub Pages.
 
+The game includes Easy, Medium, and Hard modes. Hard mode drains energy faster and pays a higher score multiplier, while Easy mode gives a gentler run with a lower multiplier.
+
 ## Play locally
 
 Open `index.html` in a browser.

@@ -249,6 +249,44 @@ button {
   gap: 0.5rem;
 }
 
+.difficulty-panel {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.segmented-control {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+  padding: 0.35rem;
+  border: 1px solid rgba(238, 247, 244, 0.12);
+  border-radius: 8px;
+  background: rgba(5, 10, 12, 0.72);
+}
+
+.segmented-control button {
+  min-height: 2.35rem;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--muted);
+  cursor: pointer;
+  background: transparent;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.segmented-control button:hover {
+  color: var(--ink);
+  border-color: rgba(66, 232, 212, 0.26);
+}
+
+.segmented-control button.is-active {
+  color: #061011;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--cyan), var(--amber));
+  box-shadow: 0 0 18px rgba(66, 232, 212, 0.18);
+}
+
 .readout-row {
   display: flex;
   justify-content: space-between;
