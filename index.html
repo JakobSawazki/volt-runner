@@ -5,16 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#071015">
     <title>Volt Runner</title>
+    <link rel="icon" href="./assets/games-lab-mark.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
     <div class="app">
       <header class="topbar">
-        <div class="brand" aria-label="Volt Runner">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>Volt Runner</span>
+        <div class="brand-stack">
+          <a class="lab-brand" href="https://jakobsawazki.github.io/mini-games/" aria-label="Back to Games Lab">
+            <img src="./assets/games-lab-mark.svg" alt="" aria-hidden="true">
+            <span>
+              <strong>Games Lab</strong>
+              <small>Sawazki Electronics</small>
+            </span>
+          </a>
+          <div class="brand" aria-label="Volt Runner">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>Volt Runner</span>
+          </div>
         </div>
         <div class="top-stats" aria-label="Run status">
+          <a class="home-chip" href="https://jakobsawazki.github.io/mini-games/">Home</a>
           <span id="levelBadge">Level 1</span>
           <span id="scoreBadge">Score 0</span>
           <span id="statusBadge">Standby</span>
@@ -105,6 +116,7 @@
 
       <footer class="footer">
         <span id="footerStatus">Static browser build</span>
+        <a href="https://jakobsawazki.github.io/mini-games/">Back to Games Lab</a>
       </footer>
     </div>
 

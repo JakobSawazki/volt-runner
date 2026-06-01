@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">Games Lab mark</title>
+  <desc id="desc">A circuit cross and arcade frame for Sawazki Electronics Games Lab.</desc>
+  <defs>
+    <linearGradient id="glow" x1="12" y1="12" x2="84" y2="84" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#42e8d4"/>
+      <stop offset="0.52" stop-color="#8dff62"/>
+      <stop offset="1" stop-color="#f5c84b"/>
+    </linearGradient>
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect x="7" y="7" width="82" height="82" rx="18" fill="#070a12" stroke="url(#glow)" stroke-width="3"/>
+  <path d="M48 18v60M18 48h60" stroke="url(#glow)" stroke-width="8" stroke-linecap="round" filter="url(#softGlow)"/>
+  <path d="M24 24h16M56 24h16M24 72h16M56 72h16" stroke="#5da9ff" stroke-width="3" stroke-linecap="round" opacity=".72"/>
+  <circle cx="48" cy="48" r="7" fill="#070a12" stroke="#f5fbff" stroke-width="3"/>
+</svg>
