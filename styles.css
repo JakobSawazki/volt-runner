@@ -6,6 +6,7 @@
   --ink: #eef7f4;
   --muted: #8ea5a1;
   --line: rgba(157, 188, 182, 0.2);
+  --electric: #1faeff;
   --cyan: #42e8d4;
   --cyan-deep: #0ba39a;
   --green: #65f16f;
@@ -81,6 +82,9 @@ button {
 .lab-brand img {
   width: 2.3rem;
   height: 2.3rem;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 0 16px rgba(31, 174, 255, 0.36);
 }
 
 .lab-brand span {
@@ -95,11 +99,12 @@ button {
 }
 
 .lab-brand small {
-  color: var(--muted);
+  color: var(--electric);
   font-size: 0.62rem;
   font-weight: 700;
   line-height: 1;
   text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(31, 174, 255, 0.44);
 }
 
 .brand {
