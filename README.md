@@ -4,7 +4,7 @@ Volt Runner is a small browser mini-game built with plain HTML, CSS, and JavaScr
 
 The game includes Easy, Medium, and Hard modes. Hard mode drains energy faster and pays a higher score multiplier, while Easy mode gives a gentler run with a lower multiplier.
 
-The header links back to Games Lab, the Sawazki Electronics mini-games homepage, using the shared raster logo asset. The current Games Lab logo combines a neon lab flask with game controller details.
+The header links back to Games Lab, the Sawazki Electronics games homepage, using the central Games Lab raster logo from `https://jakobsawazki.github.io/games-lab/assets/games-lab-logo.png`. The current Games Lab logo combines a neon lab flask with game controller details.
 
 ## Play locally
 
